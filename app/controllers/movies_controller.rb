@@ -1,18 +1,14 @@
+# frozen_string_literal: true
+
 class MoviesController < ApplicationController
   def index
-    @movies = Movie.all
-    render json: @movies
+    render json: Movie.page(params[:page])
   end
 
   def recommendations
     favorite_movies = User.find(params[:user_id]).favorites
-    @recommendations = RecommendationEngine.new(favorite_movies).recommendations
+    @recommendations = RecommendationsService.call(favorite_movies)
     render json: @recommendations
-  end
-
-  def user_rented_movies
-    @rented = User.find(params[:user_id]).rented
-    render json: @rented
   end
 
   def rent
