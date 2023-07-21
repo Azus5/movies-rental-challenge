@@ -12,11 +12,11 @@ class MoviesController < ApplicationController
   end
 
   def rent
-    user = User.find(params[:user_id])
-    movie = Movie.find(params[:id])
-    movie.available_copies -= 1
-    movie.save
-    user.rented << movie
+    movie = RentService.call(params)
+
     render json: movie
+  rescue RentService::MovieNotAvailable
+    # TODO: better error handling
+    render json: { error: 'movie is not available' }, status: :bad_request
   end
 end
