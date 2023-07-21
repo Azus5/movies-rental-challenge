@@ -11,11 +11,6 @@ class MoviesController < ApplicationController
     render json: @recommendations
   end
 
-  def user_rented_movies
-    @rented = User.find(params[:user_id]).rented
-    render json: @rented
-  end
-
   def rent
     user = User.find(params[:user_id])
     movie = Movie.find(params[:id])
